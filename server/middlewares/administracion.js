@@ -10,11 +10,11 @@ let validaAdministrador = (req, res, next) => {
         });
     };
 
-    jwt.verify(token, 'semilla-desarrollo-ipronect', (err, decoded) => {
+    jwt.verify(token, process.env.SEED, (err, decoded) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
-                message: 'Error decodificando el token'
+                message: 'No estas autorizado, solo administradores del sistema'
             });
         };
         //console.log(decoded.administrador);

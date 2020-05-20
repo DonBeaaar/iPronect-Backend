@@ -7,6 +7,12 @@ app.use(require('../routes/publicacion'));
 
 
 
+//============================================
+// Organizacionales
+//============================================
+app.use(require('./organizacional/categoria'));
+
+
 
 //===========================================
 //Rutas administrador

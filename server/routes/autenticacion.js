@@ -36,7 +36,7 @@ app.post('/autenticacion', (req, res) => {
             };
 
             // Generar token
-            let token = jwt.sign({ empresa: empresaDB }, 'semilla-desarrollo-ipronect', { expiresIn: '2h' });
+            let token = jwt.sign({ empresa: empresaDB }, process.env.SEED, { expiresIn: '2h' });
 
             res.json({
                 ok: true,

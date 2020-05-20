@@ -56,7 +56,7 @@ app.post('/autenticacion-administrador', [], (req, res) => {
             });
         };
 
-        let tokenAdministrador = jwt.sign({ administrador: administradorDB }, 'semilla-desarrollo-ipronect', { expiresIn: '1h' });
+        let tokenAdministrador = jwt.sign({ administrador: administradorDB }, process.env.SEED, { expiresIn: '1h' });
 
         res.json({
             ok: true,

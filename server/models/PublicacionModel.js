@@ -9,9 +9,9 @@ let publicacionSchema = new Schema({
 
     empresa: { type: Schema.Types.ObjectId, ref: 'Empresa', required: true },
     titulo: { type: String, required: true },
-    precio: { type: String },
-    descripcion: { type: String },
-    producto: { type: String },
+    precio: { type: String, required: true },
+    descripcion: { type: String, required: true },
+    producto: { type: Schema.Types.ObjectId, ref: 'Producto', required: true },
     stock: { type: Number, required: true },
     despachoDomicilio: { type: Boolean },
     unidad: { type: String, enum: unidadesPublicacion, required: true },

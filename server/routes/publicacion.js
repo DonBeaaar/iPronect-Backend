@@ -43,7 +43,7 @@ app.post('/publicacion', [validaToken], (req, res) => {
 
 app.get('/publicacion', [validaToken], (req, res) => {
 
-    Publicacion.find({ estadoPublicacion: 'Aprobada' })
+    Publicacion.find({ estadoPublicacion: 'Aprobada' }).select('-estadoPublicacion')
         .exec((err, publicacionesDB) => {
             if (err) {
                 return res.status(500).json({

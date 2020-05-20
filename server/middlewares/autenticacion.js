@@ -9,7 +9,7 @@ let validaToken = (req, res, next) => {
 
     let token = req.get('token');
 
-    jwt.verify(token, 'semilla-desarrollo-ipronect', (err, decoded) => {
+    jwt.verify(token, process.env.SEED, (err, decoded) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
