@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let unidadesPublicacion = { values: ['KG', 'Caja', 'Litro', 'Unidad'] };
 let tiposVenta = { values: ['Reserva', 'Compra'] };
-let estadosPublicacion = { values: ['Aprobada', 'Rechazada', 'En evaluacion', 'En observacion'] }
+let estadosPublicacion = { values: ['Aprobada', 'Rechazada', 'En-evaluacion', 'Con-observacion'] }
 
 let publicacionSchema = new Schema({
 

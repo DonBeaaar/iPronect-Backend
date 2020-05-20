@@ -7,7 +7,7 @@ const { validaToken } = require('../middlewares/autenticacion');
 // Creacion de publicacion
 //===========================================
 
-app.post('/ingresar-publicacion', [validaToken], (req, res) => {
+app.post('/publicacion', [validaToken], (req, res) => {
 
     let body = req.body;
     let publicacion = new Publicacion({
@@ -27,7 +27,7 @@ app.post('/ingresar-publicacion', [validaToken], (req, res) => {
 
     publicacion.save((err, publicacionDB) => {
         if (err) {
-            return res.status(400).json({
+            return res.status(500).json({
                 ok: false,
                 message: 'Error registrando la publicacion'
             });
@@ -41,7 +41,31 @@ app.post('/ingresar-publicacion', [validaToken], (req, res) => {
 
 });
 
+app.get('/publicacion', [validaToken], (req, res) => {
 
+    Publicacion.find({ estadoPublicacion: 'Aprobada' })
+        .exec((err, publicacionesDB) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    message: 'Error mostrando las publicaciones'
+                });
+            };
+            Publicacion.countDocuments({ estadoPublicacion: 'Aprobada' }, (err, cantidad) => {
+                if (cantidad <= 0) {
+                    return res.status(400).json({
+                        ok: false,
+                        message: 'No hay publicaciones registradas'
+                    });
+                };
+                res.json({
+                    ok: true,
+                    message: 'Lista de publicaciones',
+                    publicaciones: publicacionesDB
+                });
+            });
+        });
+});
 
 
 
