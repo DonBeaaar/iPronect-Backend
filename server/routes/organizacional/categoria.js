@@ -34,7 +34,7 @@ app.post('/categoria', [validaAdministrador], (req, res) => {
         res.json({
             ok: true,
             message: 'Categoria creada exitosamente'
-        })
+        });
 
     });
 

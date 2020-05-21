@@ -11,6 +11,7 @@ app.use(require('../routes/publicacion'));
 // Organizacionales
 //============================================
 app.use(require('./organizacional/categoria'));
+app.use(require('./organizacional/producto'));
 
 
 

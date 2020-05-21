@@ -29,7 +29,8 @@ app.post('/publicacion', [validaToken], (req, res) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
-                message: 'Error registrando la publicacion'
+                message: 'Error registrando la publicacion',
+                err
             });
         };
 
@@ -40,6 +41,11 @@ app.post('/publicacion', [validaToken], (req, res) => {
     });
 
 });
+
+
+//============================================
+// Ver publicaciones activas
+//============================================
 
 app.get('/publicacion', [validaToken], (req, res) => {
 
@@ -65,6 +71,16 @@ app.get('/publicacion', [validaToken], (req, res) => {
                 });
             });
         });
+});
+
+
+//============================================
+// Ver publicaciones por precio
+//============================================
+
+app.get('/publicacion/:precio', [], (req, res) => {
+    // localhost:5000/publicacion/500
+
 });
 
 
