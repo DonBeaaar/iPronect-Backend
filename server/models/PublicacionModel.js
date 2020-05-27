@@ -19,7 +19,7 @@ let publicacionSchema = new Schema({
     diasRetiro: { type: Number },
     direccionRetiro: { type: Array },
     imagenes: { type: Array },
-    estadoPublicacion: { type: String, enum: estadosPublicacion, default: 'En evaluacion' },
+    estadoPublicacion: { type: String, enum: estadosPublicacion, default: 'En-evaluacion' },
     estado: { type: Boolean, default: true }
 });
 

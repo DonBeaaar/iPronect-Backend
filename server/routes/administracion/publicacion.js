@@ -16,7 +16,18 @@ app.get('/publicacion-administrador', [validaAdministrador], (req, res) => {
     let estado = req.body.estado;
     verificarEstado(estado, res);
     Publicacion.find({ estadoPublicacion: estado })
+        .populate({
+            path: 'producto',
+            populate: { path: 'categoria' }
+        })
+        .populate('empresa')
         .exec((err, publicacionesDB) => {
+            if (publicacionesDB.length <= 0) {
+                return res.status(400).json({
+                    ok: false,
+                    message: 'No hay publicaciones disponibles en este estado'
+                });
+            };
             if (err) {
                 return res.status(500).json({
                     ok: false,
@@ -24,20 +35,11 @@ app.get('/publicacion-administrador', [validaAdministrador], (req, res) => {
                     err
                 });
             };
-            Publicacion.countDocuments({ estadoPublicacion: estado }, (err, cantidad) => {
-                if (cantidad <= 0) {
-                    return res.status(500).json({
-                        ok: false,
-                        message: 'No hay publicaciones registradas en ese estado'
-                    });
-                };
-                res.json({
-                    ok: true,
-                    message: `Lista de publicaciones en estado ${estado}: `,
-                    cantidad,
-                    publicaciones: publicacionesDB
-                })
-            });
+            res.json({
+                ok: true,
+                message: `Lista de publicaciones en estado ${estado}: `,
+                publicaciones: publicacionesDB
+            })
         });
 });
 
@@ -108,7 +110,7 @@ app.put('/publicacion-administrador/:publicacion', [validaAdministrador], (req, 
 //============================================
 
 function verificarEstado(estado, res) {
-    let estadosPermitidos = ['Aprobada', 'Rechazada', 'Con-observacion'];
+    let estadosPermitidos = ['Aprobada', 'Rechazada', 'En-evaluacion', 'Con-observacion'];
     if (estadosPermitidos.indexOf(estado) < 0) {
         return res.status(500).json({
             ok: false,

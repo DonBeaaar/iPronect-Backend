@@ -24,4 +24,11 @@ let empresaSchema = new Schema({
     dv: { type: String }
 });
 
+empresaSchema.methods.toJSON = function() {
+    let empresa = this;
+    let empresaObject = empresa.toObject();
+    delete empresaObject.password;
+    return empresaObject;
+};
+
 module.exports = mongoose.model('Empresa', empresaSchema);
