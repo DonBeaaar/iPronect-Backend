@@ -50,7 +50,7 @@ app.post('/publicacion', [validaToken], (req, res) => {
 
 app.get('/publicacion', [validaToken], (req, res) => {
 
-    Publicacion.find({ estadoPublicacion: 'Aprobada' }).select('-estadoPublicacion')
+    Publicacion.find({ estadoPublicacion: 'Aprobada', estado: true }).select('-estadoPublicacion')
         .exec((err, publicacionesDB) => {
             if (err) {
                 return res.status(500).json({
@@ -58,7 +58,7 @@ app.get('/publicacion', [validaToken], (req, res) => {
                     message: 'Error mostrando las publicaciones'
                 });
             };
-            Publicacion.countDocuments({ estadoPublicacion: 'Aprobada' }, (err, cantidad) => {
+            Publicacion.countDocuments({ estadoPublicacion: 'Aprobada', estado: true }, (err, cantidad) => {
                 if (cantidad <= 0) {
                     return res.status(400).json({
                         ok: false,
@@ -73,6 +73,102 @@ app.get('/publicacion', [validaToken], (req, res) => {
                 });
             });
         });
+});
+
+
+//============================================
+// Editar publicacion
+//============================================
+
+app.put('/publicacion/:publicacion', [validaToken], (req, res) => {
+
+    let publicacion = req.params.publicacion;
+    let body = req.body;
+
+    if (Object.keys(body).length == 0) {
+        return res.status(400).json({
+            ok: false,
+            message: 'Debes enviar parametros para actualizar la publicacion'
+        });
+    };
+    Publicacion.findByIdAndUpdate(publicacion, body, { useFindAndModify: false, new: true }, (err, publicacionDB) => {
+        if (!publicacionDB) {
+            return res.status(400).json({
+                ok: false,
+                message: 'La publicacion que estas intentando actualizar no existe'
+            });
+        };
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                message: 'Error actualizando la publicacion'
+            });
+        };
+        res.json({
+            ok: true,
+            message: 'Publicacion actualizada correctamente'
+        })
+
+    });
+});
+
+//============================================
+// Borrar publicacion
+//============================================
+
+app.delete('/publicacion/:publicacion', [validaToken], (req, res) => {
+
+    let publicacion = req.params.publicacion;
+
+    Publicacion.findByIdAndUpdate(publicacion, { estadoPublicacion: 'Inactiva' }, { useFindAndModify: false, new: true }, (err, publicacionDB) => {
+        if (!publicacionDB) {
+            return res.status(400).json({
+                ok: false,
+                message: 'La publicacion que estas intentando borrar no existe'
+            });
+        };
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                message: 'Error borrando la publicacion'
+            });
+        };
+        res.json({
+            ok: true,
+            message: 'Publicacion eliminada correctamente'
+        })
+
+    });
+});
+
+
+//============================================
+// Activar publicacion
+//============================================
+
+app.post('/publicacion/activar/:publicacion', [validaToken], (req, res) => {
+
+    let publicacion = req.params.publicacion;
+
+    Publicacion.findByIdAndUpdate(publicacion, { estadoPublicacion: 'Aprobada' }, { useFindAndModify: false, new: true }, (err, publicacionDB) => {
+        if (!publicacionDB) {
+            return res.status(400).json({
+                ok: false,
+                message: 'La publicacion que estas intentando borrar no existe'
+            });
+        };
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                message: 'Error borrando la publicacion'
+            });
+        };
+        res.json({
+            ok: true,
+            message: 'Publicacion activada correctamente'
+        })
+
+    });
 });
 
 
