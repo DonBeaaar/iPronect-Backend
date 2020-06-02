@@ -36,4 +36,4 @@ if (process.env.NODE_ENV === 'dev') {
 }
 
 process.env.URL_DB = urlDB;
-process.env.URL_NETFRUIT = url;
+process.env.URL_IPRONECT = url;
