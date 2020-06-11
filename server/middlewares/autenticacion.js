@@ -17,6 +17,7 @@ let validaToken = (req, res, next) => {
             });
         };
         req.empresa = decoded.empresa;
+
         next();
     });
 };
