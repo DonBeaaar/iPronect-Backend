@@ -20,7 +20,10 @@ app.post('/reserva', [validaToken, validaPublicacion], (req, res) => {
         comprador: empresa,
         vendedor,
         cantidad,
-        fecha: moment().format("DD-MM-YYYY")
+        fecha: moment().format("DD-MM-YYYY"),
+        despacho,
+        preciodespacho,
+        preciofinal
     });
 
     reserva.save((err, reservaDB) => {

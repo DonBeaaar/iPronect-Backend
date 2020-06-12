@@ -185,6 +185,89 @@ app.get('/publicacion/categoria/:categoria', [validaToken], (req, res) => {
 
 });
 
+//============================================
+// Ver Detalled de publicacion
+//============================================
+
+    
+app.get('/publicacion/:publicacion', [validaToken], (req, res) => {
+
+
+    let publicacion = req.params.publicacion;
+if (!publicacion) {
+    return res.status(400).json({
+        ok: 'false',
+        message: 'La publicacion es requerido'
+    });
+};
+Publicacion.findById(publicacion, (err, PublicacionDB) => {
+    
+    if (!PublicacionDB) {
+        return res.status(400).json({
+            ok: false,
+            message: 'La publicacion que selecciono ya no se encuentra disponible'
+        })
+    };
+
+            res.json({
+                ok: true,
+                message: `Detalle de publicacion ${PublicacionDB.titulo}`,
+                publicacion: PublicacionDB,
+                
+            });
+
+        });
+});
+
+//============================================
+// Ver perfil de empresa con sus productos
+//============================================
+
+
+app.get('/publicaciones/:empresa', [validaToken], (req, res) => {
+
+
+    let empresa = req.params.empresa;
+    if (!empresa) {
+        return res.status(400).json({
+            ok: 'false',
+            message: 'La empresa es requerida'
+        });
+    };
+    Empresa.findById(empresa, (err, empresaDB) => {
+        if (!empresaDB) {
+            return res.status(400).json({
+                ok: false,
+                message: 'La empresa que estas intentando buscar no existe'
+            })
+        };
+    
+        Publicacion.find({empresa})
+            .exec((err, publicacionesDB) => {
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        message: 'Error mostrando las pubicaciones'
+                    });
+                };
+                if (publicacionesDB.length <= 0) {
+                    return res.status(400).json({
+                        ok: false,
+                        message: 'No se encuentran publicaciones asocadas a esa empresa'
+                    })
+                };
+    
+                res.json({
+                    ok: true,
+                    message: `Publicaciones asociadas a la empresa ${empresaDB.nombre}`,
+                    pulicaciones: publicacionesDB,
+                    
+                });
+    
+            });
+    });
+    });
+
 
 
 

@@ -4,6 +4,7 @@ const app = express();
 app.use(require('../routes/empresa'));
 app.use(require('../routes/autenticacion'));
 app.use(require('../routes/publicacion'));
+app.use(require('../routes/comentario'));
 app.use(require('../routes/reserva'));
 
 
