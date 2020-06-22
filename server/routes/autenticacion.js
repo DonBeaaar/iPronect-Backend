@@ -41,7 +41,8 @@ app.post('/autenticacion', (req, res) => {
             res.json({
                 ok: true,
                 message: 'Autenticación exitosa',
-                token
+                token,
+                empresa: empresaDB
             });
 
         });
