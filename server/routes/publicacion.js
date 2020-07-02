@@ -268,6 +268,160 @@ app.get('/publicaciones/:empresa', [validaToken], (req, res) => {
     });
     });
 
+    //============================================
+// Ver por productos
+//============================================
+
+
+app.get('/publicacions/:producto', [validaToken], (req, res,) => {
+
+    
+    let producto = req.params.producto;
+    if (!producto) {
+        return res.status(400).json({
+            ok: 'false',
+            message: 'El producto es requerido'
+        });
+    };
+    Producto.findById(producto, (err, ProductoDB) => {
+        if (!ProductoDB) {
+            return res.status(400).json({
+                ok: false,
+                message: 'El producto que estas intentando buscar no existe'
+            })
+        };
+
+        
+        Publicacion.find({producto})
+        
+            .exec((err, publicacionDB) => {
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        message: 'Error mostrando publicacion'
+                    });
+                };
+                if (publicacionDB.length <= 0) {
+                    return res.status(400).json({
+                        ok: false,
+                        message: 'No se encuentran publicaciones asociadas a este producto'
+                    })
+                };
+                
+                res.json({
+                    ok: true,
+                    message: `Publicaciones de ${ProductoDB.nombre}`,
+                    publicaciones: publicacionDB,
+                    
+                });
+               
+            });
+           
+    });
+
+    });
+
+
+
+//============================================
+// Ver precio alto de producto
+//============================================
+
+app.get('/precioalto/:producto', [validaToken], (req, res,) => {
+
+    let producto = req.params.producto;
+    if (!producto) {
+        return res.status(400).json({
+            ok: 'false',
+            message: 'El producto es requerido'
+        });
+    };
+    Producto.findById(producto, (err, ProductoDB) => {
+        if (!ProductoDB) {
+            return res.status(400).json({
+                ok: false,
+                message: 'El producto que estas intentando buscar no existe'
+            })
+        };
+
+    let publicacion = req.params.publicacion;
+
+        Publicacion.find({publicacion}).sort({precio:-1}).limit(1)
+        
+            .exec((err, publicacionDB) => {
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        message: 'Error mostrando publicacion'
+                    });
+                };
+                if (publicacionDB.length <= 0) {
+                    return res.status(400).json({
+                        ok: false,
+                        message: 'No se encuentran publicaciones asociadas a este producto'
+                    })
+                };
+                
+                res.json({
+                    ok: true,
+                    message: `precio alto de ${ProductoDB.nombre}`,
+                    publicaciones: publicacionDB,
+                    
+                });
+            });
+        });
+    });
+    
+//============================================
+// Ver precio bajo de producto
+//============================================
+
+app.get('/preciobajo/:producto', [validaToken], (req, res,) => {
+
+    let producto = req.params.producto;
+    if (!producto) {
+        return res.status(400).json({
+            ok: 'false',
+            message: 'El producto es requerido'
+        });
+    };
+    Producto.findById(producto, (err, ProductoDB) => {
+        if (!ProductoDB) {
+            return res.status(400).json({
+                ok: false,
+                message: 'El producto que estas intentando buscar no existe'
+            })
+        };
+
+    let publicacion = req.params.publicacion;
+
+        Publicacion.find({publicacion}).sort({precio:+1}).limit(1)
+        
+            .exec((err, publicacionDB) => {
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        message: 'Error mostrando publicacion'
+                    });
+                };
+                if (publicacionDB.length <= 0) {
+                    return res.status(400).json({
+                        ok: false,
+                        message: 'No se encuentran publicaciones asociadas a este producto'
+                    })
+                };
+                
+                res.json({
+                    ok: true,
+                    message: `precio bajo de ${ProductoDB.nombre}`,
+                    publicaciones: publicacionDB,
+                    
+                });    
+    
+            });
+        });
+    });
+
 
 
 
